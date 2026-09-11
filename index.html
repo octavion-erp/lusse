@@ -647,24 +647,31 @@ H0% Remy human hair extensions — clip-in, tape-in, hand-tied weft, halo and ke
             <a class="btn btn-line" href="tel:+971542005442">Call the atelier</a>
           </div>
         </div>
-        <form id="bookForm" novalidate>
+        <form id="bookForm" action="https://formsubmit.co/info@lussehair.com" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="New consultation request — LUSSÉ website">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_autoresponse" value="Thank you for contacting LUSSÉ. We received your consultation request and will WhatsApp you shortly to arrange your colour match. — LUSSÉ Hair Atelier">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
           <label for="fName">Name</label>
-          <input id="fName" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+          <input id="fName" name="Name" type="text" placeholder="Your name" autocomplete="name" required>
           <label for="fPhone">Phone / WhatsApp</label>
-          <input id="fPhone" name="phone" type="tel" placeholder="+971 5X XXX XXXX" autocomplete="tel" required>
-          <label for="fEmirate">Emirate</label>
-          <select id="fEmirate" name="emirate">
+          <input id="fPhone" name="Phone" type="tel" placeholder="+971 5X XXX XXXX" autocomplete="tel" required>
+          <label for="fEmirate">Emirate / City</label>
+          <select id="fEmirate" name="Location">
             <option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option>
             <option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option>
+            <option>Riyadh (KSA)</option><option>Jeddah (KSA)</option><option>Other city / country</option>
           </select>
           <label for="fMethod">Interested in</label>
-          <select id="fMethod" name="method">
+          <select id="fMethod" name="Interested_in">
             <option>Clip-in set</option><option>Tape-in</option><option>Hand-tied weft</option>
             <option>Halo</option><option>Keratin I-tip</option><option>Not sure — advise me</option>
           </select>
           <label for="fNote">Notes (colour, length, occasion)</label>
-          <textarea id="fNote" name="note" placeholder="e.g. balayage blonde, 20 inch, for a wedding in June"></textarea>
-          <button class="btn btn-solid" type="submit" style="justify-content:center">Request my consultation</button>
+          <textarea id="fNote" name="Notes" placeholder="e.g. balayage blonde, 20 inch, for a wedding in June"></textarea>
+          <button class="btn btn-solid" id="submitBtn" type="submit" style="justify-content:center">Request my consultation</button>
+          <a class="btn btn-line" id="waFallback" href="https://wa.me/971542005442" target="_blank" rel="noopener" style="justify-content:center;margin-top:8px">Or send us on WhatsApp</a>
           <p class="form-msg" id="formMsg" role="status"></p>
         </form>
       </div>
@@ -866,16 +873,32 @@ H0% Remy human hair extensions — clip-in, tape-in, hand-tied weft, halo and ke
     faqEl.appendChild(d);
   });
 
-  /* ---------- booking form ---------- */
+  /* ---------- booking form: FormSubmit + WhatsApp mirror ---------- */
   var form=document.getElementById("bookForm"), msg=document.getElementById("formMsg");
+  var waBtn=document.getElementById("waFallback");
+  function buildWa(){
+    var g=function(id){return (document.getElementById(id)||{}).value||""};
+    var lines=[
+      "Hi LUSSÉ, I'd like a colour-match consultation.",
+      "Name: "+g("fName"),
+      "Phone: "+g("fPhone"),
+      "Location: "+g("fEmirate"),
+      "Interested in: "+g("fMethod"),
+      "Notes: "+g("fNote")
+    ].filter(Boolean).join("\n");
+    waBtn.href="https://wa.me/971542005442?text="+encodeURIComponent(lines);
+  }
+  ["fName","fPhone","fEmirate","fMethod","fNote"].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.addEventListener("input",buildWa);
+    if(el) el.addEventListener("change",buildWa);
+  });
+  buildWa();
   form.addEventListener("submit",function(e){
-    e.preventDefault();
     var name=document.getElementById("fName").value.trim();
     var phone=document.getElementById("fPhone").value.trim();
-    if(!name||!phone){msg.style.color="var(--blush)";msg.textContent="Please add your name and a number we can reach you on.";return;}
-    msg.style.color="var(--accent)";
-    msg.textContent="Thank you, "+name.split(" ")[0]+" — our atelier will message you to confirm your colour match.";
-    form.reset();
+    if(!name||!phone){ e.preventDefault(); msg.style.color="var(--blush)"; msg.textContent="Please add your name and a number we can reach you on."; return; }
+    msg.style.color="var(--accent)"; msg.textContent="Sending your request…";
+    document.getElementById("submitBtn").disabled=true;
   });
 
   /* ---------- router ---------- */
