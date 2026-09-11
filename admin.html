@@ -38,6 +38,9 @@ textarea{resize:vertical;min-height:80px}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#160f07;padding:12px 22px;border-radius:999px;font-weight:600;box-shadow:0 12px 30px -12px rgba(0,0,0,.6);z-index:99;transition:.25s;opacity:0;pointer-events:none}
 .toast.show{opacity:1}
 .export-box{position:relative}
+.pub-log{background:var(--surface);border:1px solid var(--card-b);border-radius:10px;padding:14px;font-family:"SF Mono",Menlo,monospace;font-size:.82rem;color:var(--ink-soft);min-height:80px;line-height:1.6}
+.pub-log .ok{color:var(--accent)}.pub-log .err{color:var(--danger)}.pub-log .step{color:var(--ink-soft)}
+
 .export-box textarea{font-family:"SF Mono",Menlo,monospace;font-size:.78rem;line-height:1.5;min-height:220px}
 .export-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .step{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--hair)}
@@ -74,7 +77,7 @@ a{color:var(--accent-soft)}
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button id="addBtn">+ New product</button>
-      <button class="ghost" id="exportBtn">Publish changes</button>
+      <button id="exportBtn">Publish changes</button>
       <button class="ghost" id="reloadBtn">Reload</button>
       <button class="ghost" id="logoutBtn">Logout</button>
     </div>
@@ -130,20 +133,25 @@ a{color:var(--accent-soft)}
     </div>
 
     <!-- export -->
-    <div id="exportPanel" class="card" style="display:none">
-      <h2>Publish changes</h2>
-      <p class="hint">Copy the JSON below, paste it into <code>products.json</code> on GitHub, and Vercel will auto-deploy in ~30 seconds.</p>
-      <div class="step"><div class="n">1</div><div class="b"><b>Copy the JSON</b><p>Click the copy button below.</p></div></div>
-      <div class="step"><div class="n">2</div><div class="b"><b>Open products.json on GitHub</b><p><a href="https://github.com/octavion-erp/lusse/edit/main/products.json" target="_blank" rel="noopener">Click here to open it →</a></p></div></div>
-      <div class="step"><div class="n">3</div><div class="b"><b>Paste and commit</b><p>Select all (Cmd+A), paste (Cmd+V), then click <code>Commit changes…</code> at the bottom.</p></div></div>
-      <div class="step"><div class="n">4</div><div class="b"><b>Wait 30 seconds</b><p>Vercel deploys automatically. Refresh <a href="https://lussehair.com" target="_blank">lussehair.com</a> to see the changes.</p></div></div>
-      <div class="export-box" style="margin-top:20px">
-        <textarea id="jsonOut" readonly></textarea>
-        <div class="export-actions">
-          <button id="copyBtn">Copy JSON</button>
-          <button class="ghost" id="downloadBtn">Download products.json</button>
-          <button class="ghost" id="closeExport">Close</button>
+    <div id="publishPanel" class="card" style="display:none">
+      <h2>Publish to lussehair.com</h2>
+      <p class="hint">One click sends your changes live. Deployment takes 15–30 seconds.</p>
+      <div id="pubLog" class="pub-log"></div>
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+        <button id="publishNowBtn">Publish now</button>
+        <button class="ghost" id="closePub">Cancel</button>
+      </div>
+      <details style="margin-top:22px">
+        <summary style="cursor:pointer;color:var(--muted);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase">Advanced: export JSON</summary>
+        <div class="export-box" style="margin-top:14px">
+          <textarea id="jsonOut" readonly></textarea>
+          <div class="export-actions">
+            <button class="ghost" id="copyBtn">Copy JSON</button>
+            <button class="ghost" id="downloadBtn">Download products.json</button>
+          </div>
         </div>
+      </details>
+    </div>
       </div>
     </div>
 
@@ -163,7 +171,7 @@ const DATA_KEY="lusse-products";
 async function sha256(s){const b=new TextEncoder().encode(s);const h=await crypto.subtle.digest("SHA-256",b);return[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("")}
 document.getElementById("loginBtn").onclick=async()=>{
   const pw=document.getElementById("pw").value;
-  if(pw===DEFAULT_PW){ sessionStorage.setItem(KEY,"1"); show(); }
+  if(pw===DEFAULT_PW){ sessionStorage.setItem(KEY,"1"); try{ sessionStorage.setItem("lusse-pw",pw); }catch(e){} show(); }
   else document.getElementById("loginErr").textContent="Wrong password.";
 };
 document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("loginBtn").click()});
@@ -248,19 +256,43 @@ document.getElementById("reloadBtn").onclick=async()=>{
 };
 
 // ---- export ----
+document.getElementById("exportBtn").textContent="Publish";
 document.getElementById("exportBtn").onclick=()=>{
   document.getElementById("jsonOut").value=JSON.stringify(data,null,2);
-  document.getElementById("exportPanel").style.display="block";
-  document.getElementById("exportPanel").scrollIntoView({behavior:"smooth"});
+  document.getElementById("pubLog").innerHTML='<span class="step">Ready to publish '+data.products.length+' products.</span>';
+  document.getElementById("publishPanel").style.display="block";
+  document.getElementById("publishPanel").scrollIntoView({behavior:"smooth"});
 };
-document.getElementById("closeExport").onclick=()=>document.getElementById("exportPanel").style.display="none";
+document.getElementById("closePub").onclick=()=>document.getElementById("publishPanel").style.display="none";
 document.getElementById("copyBtn").onclick=async()=>{
-  await navigator.clipboard.writeText(document.getElementById("jsonOut").value);toast("Copied JSON")
+  await navigator.clipboard.writeText(document.getElementById("jsonOut").value);toast("Copied JSON");
 };
 document.getElementById("downloadBtn").onclick=()=>{
   const b=new Blob([document.getElementById("jsonOut").value],{type:"application/json"});
   const u=URL.createObjectURL(b);const a=document.createElement("a");
   a.href=u;a.download="products.json";a.click();URL.revokeObjectURL(u);
+};
+document.getElementById("publishNowBtn").onclick=async()=>{
+  const btn=document.getElementById("publishNowBtn"), log=document.getElementById("pubLog");
+  btn.disabled=true; btn.textContent="Publishing…";
+  log.innerHTML='<span class="step">→ Sending changes to server…</span>';
+  let pw=DEFAULT_PW; try{ const s=sessionStorage.getItem("lusse-pw"); if(s) pw=s; }catch(e){}
+  try{
+    const r=await fetch("/api/publish",{method:"POST",headers:{"Content-Type":"application/json","x-admin-password":pw},body:JSON.stringify(data)});
+    let j={}; try{ j=await r.json(); }catch(e){}
+    if(!r.ok){
+      log.innerHTML+='<br><span class="err">✗ '+esc(j.error||("HTTP "+r.status))+'</span>'+(j.detail?'<br><span class="err" style="opacity:.7">'+esc(j.detail)+'</span>':'');
+      btn.disabled=false; btn.textContent="Publish now"; return;
+    }
+    log.innerHTML+='<br><span class="ok">✓ Committed successfully.</span><br><span class="step">→ Vercel is deploying now — 15–30 seconds…</span>';
+    setTimeout(()=>{
+      log.innerHTML+='<br><span class="ok">✓ Published! Refresh <a href="https://lussehair.com" target="_blank">lussehair.com</a> to see it.</span>';
+      btn.textContent="Published ✓";
+    }, 15000);
+  }catch(e){
+    log.innerHTML+='<br><span class="err">✗ Network error: '+esc(String(e))+'</span>';
+    btn.disabled=false; btn.textContent="Publish now";
+  }
 };
 </script>
 </body>
