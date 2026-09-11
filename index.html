@@ -353,6 +353,21 @@ H0% Remy human hair extensions — clip-in, tape-in, hand-tied weft, halo and ke
   footer .brand .logo-svg{color:var(--hero-ink)}
   @media(max-width:560px){.brand .logo-nav{height:25px}}
   .center{text-align:center}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .pcard{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:28px 26px;display:flex;flex-direction:column;gap:12px;transition:.35s;position:relative;overflow:hidden}
+  .pcard:hover{transform:translateY(-4px);border-color:var(--accent-soft);box-shadow:var(--shadow)}
+  .pcard .method{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500}
+  .pcard h3{font-size:1.35rem;margin:0}
+  .pcard .price{font-family:"Bodoni Moda","Cormorant",serif;font-style:italic;color:var(--ink);font-size:1.6rem;line-height:1}
+  .pcard .price small{font-family:"Jost",sans-serif;font-size:.75rem;font-style:normal;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+  .pcard .desc{font-size:.92rem;color:var(--ink-soft);margin:0;flex:1}
+  .pcard dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:8px 0 0;font-size:.78rem;padding-top:14px;border-top:1px solid var(--hairline)}
+  .pcard dt{color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .pcard dd{margin:0;color:var(--ink);text-align:right;font-weight:400}
+  .pcard .lengths{display:flex;flex-wrap:wrap;gap:6px}
+  .pcard .lengths span{font-size:.7rem;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--card-border);border-radius:999px;color:var(--ink-soft)}
+  .pcard .buy{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--accent-soft),var(--accent));color:#160f07;padding:13px 22px;border-radius:999px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;text-decoration:none;margin-top:8px;transition:.25s}
+  .pcard .buy:hover{filter:brightness(1.08)}
   .cta-band{background:var(--surface);border-radius:24px;padding:clamp(40px,6vw,64px);text-align:center;border:1px solid var(--card-border)}
   .cta-band h2{font-size:var(--step3)}
   .cta-band p{max-width:48ch;margin:16px auto 26px;font-size:var(--step1);font-weight:300}
@@ -506,6 +521,18 @@ H0% Remy human hair extensions — clip-in, tape-in, hand-tied weft, halo and ke
       </div>
     </div>
   </section>
+  <section class="band" id="products">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="eyebrow">Shop the collection</p>
+        <h2>Real products. Real prices.</h2>
+        <p>Every set is 100% Remy human hair, hand-matched to your natural fall. Order via WhatsApp — we ship free across the UAE and Saudi Arabia.</p>
+      </div>
+      <div id="productsGrid" class="pgrid"></div>
+      <script id="productsSchema" type="application/ld+json"></script>
+    </div>
+  </section>
+
 </main>
 
 <!-- ===================== ABOUT ===================== -->
@@ -1035,6 +1062,43 @@ H0% Remy human hair extensions — clip-in, tape-in, hand-tied weft, halo and ke
      {"@type":"Offer","itemOffered":{"@type":"Product","name":"Halo Hair Extensions"},"priceCurrency":"AED","availability":"https://schema.org/InStock","areaServed":["AE","SA"]},
      {"@type":"Offer","itemOffered":{"@type":"Product","name":"Keratin I-tip Hair Extensions"},"priceCurrency":"AED","availability":"https://schema.org/InStock","areaServed":["AE","SA"]}
    ]}}
+</script>
+
+<script>
+(async function(){
+  try{
+    var r=await fetch("/products.json?_="+Date.now(),{cache:"no-store"});
+    if(!r.ok) return;
+    var d=await r.json();
+    var wa=d.whatsapp||"971542005442", cur=d.currency||"AED";
+    var grid=document.getElementById("productsGrid");
+    if(!grid || !d.products || !d.products.length){ document.getElementById("products")&&(document.getElementById("products").style.display="none"); return; }
+    var html="", schema=[];
+    d.products.forEach(function(p){
+      var price=p.priceTo?(cur+" "+p.priceFrom+"–"+p.priceTo):(cur+" "+p.priceFrom);
+      var text=encodeURIComponent("Hi LUSSÉ, I'd like to order "+p.name+" ("+price+"). Please advise on colour match & delivery.");
+      var img=p.image||"";
+      var lens=(p.lengths||[]).map(function(l){return "<span>"+l+"</span>"}).join("");
+      html+='<article class="pcard" id="p-'+p.id+'">'+
+        '<div class="method">'+esc(p.method||"Hair extensions")+'</div>'+
+        '<h3>'+esc(p.name)+'</h3>'+
+        '<div class="price">'+esc(price)+' <small>from</small></div>'+
+        '<p class="desc">'+esc(p.shortDesc||"")+'</p>'+
+        (lens?'<div class="lengths">'+lens+'</div>':'')+
+        (p.fitTime||p.wearTime?'<dl>'+(p.fitTime?'<dt>Fitting</dt><dd>'+esc(p.fitTime)+'</dd>':'')+(p.wearTime?'<dt>Wear</dt><dd>'+esc(p.wearTime)+'</dd>':'')+'</dl>':'')+
+        '<a class="buy" href="https://wa.me/'+wa+'?text='+text+'" target="_blank" rel="noopener">Order via WhatsApp →</a>'+
+      '</article>';
+      // JSON-LD Product schema
+      var offer={"@type":"Offer","priceCurrency":cur,"price":p.priceFrom,"availability":"https://schema.org/InStock","url":"https://lussehair.com/#p-"+p.id,"areaServed":["AE","SA"]};
+      if(p.priceTo){ offer={"@type":"AggregateOffer","priceCurrency":cur,"lowPrice":p.priceFrom,"highPrice":p.priceTo,"availability":"https://schema.org/InStock","url":"https://lussehair.com/#p-"+p.id,"areaServed":["AE","SA"]}; }
+      schema.push({"@context":"https://schema.org","@type":"Product","name":p.name,"sku":p.sku||p.id,"description":p.longDesc||p.shortDesc||"","brand":{"@type":"Brand","name":"LUSSÉ"},"category":"Hair extensions",(img?"image":"_"):(img||""),"offers":offer});
+    });
+    grid.innerHTML=html;
+    var s=document.getElementById("productsSchema");
+    if(s) s.textContent=JSON.stringify(schema);
+  }catch(e){ console.warn("products load failed",e); }
+  function esc(s){return String(s||"").replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+})();
 </script>
 </body>
 </html>

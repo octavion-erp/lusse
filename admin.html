@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>LUSSÉ Admin — Products</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap">
+<style>
+:root{--bg:#191109;--surface:#211710;--card:#241a11;--ink:#f1e8da;--ink-soft:#c9bba9;--muted:#8e8070;--accent:#cba766;--accent-soft:#dfc48d;--danger:#c76b6b;--hair:rgba(232,214,184,.14);--card-b:rgba(232,214,184,.10)}
+*{box-sizing:border-box}html,body{background:var(--bg);color:var(--ink-soft);font-family:"Manrope",system-ui,sans-serif;font-weight:300;margin:0}
+h1,h2,h3{font-family:"Cormorant",serif;font-weight:600;color:var(--ink);letter-spacing:.02em;margin:0}
+h1{font-size:2rem}h2{font-size:1.4rem}h3{font-size:1.1rem}
+.brand{font-family:"Cormorant",serif;letter-spacing:.46em;color:var(--accent);font-size:1.4rem}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+header{padding:30px 0 22px;border-bottom:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+main{padding:40px 0 80px}
+button,.btn{background:linear-gradient(135deg,var(--accent-soft),var(--accent));color:#160f07;border:0;border-radius:999px;padding:12px 24px;font-family:inherit;font-weight:600;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.25s}
+button:hover,.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--card-b)}
+button.ghost:hover{border-color:var(--accent);background:rgba(203,167,102,.08);transform:none;filter:none}
+button.danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+button.danger:hover{background:var(--danger);color:#fff;filter:none}
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:16px;padding:24px;margin-bottom:16px}
+label{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+input,textarea,select{width:100%;background:var(--surface);border:1px solid var(--card-b);border-radius:10px;padding:12px 14px;color:var(--ink);font-family:inherit;font-size:.95rem}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);border-color:transparent;outline-offset:1px}
+textarea{resize:vertical;min-height:80px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.list{display:grid;gap:14px;margin-bottom:24px}
+.p-row{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--card-b);border-radius:12px;padding:14px 18px}
+.p-row h3{font-size:1.05rem}.p-row .price{font-family:"Cormorant";color:var(--accent);font-size:1.1rem;letter-spacing:.02em}
+.p-row .method{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.row-actions{display:flex;gap:6px}.row-actions button{padding:8px 14px;font-size:.7rem}
+.hint{color:var(--muted);font-size:.85rem;margin:6px 0 0;line-height:1.5}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#160f07;padding:12px 22px;border-radius:999px;font-weight:600;box-shadow:0 12px 30px -12px rgba(0,0,0,.6);z-index:99;transition:.25s;opacity:0;pointer-events:none}
+.toast.show{opacity:1}
+.export-box{position:relative}
+.export-box textarea{font-family:"SF Mono",Menlo,monospace;font-size:.78rem;line-height:1.5;min-height:220px}
+.export-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.step{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--hair)}
+.step:first-child{border:0}
+.step .n{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#160f07;display:grid;place-items:center;font-weight:700;font-family:"Cormorant";font-size:1.05rem}
+.step .b{flex:1}
+.step .b p{margin:4px 0 0;font-size:.9rem;color:var(--ink-soft)}
+.step .b code{background:var(--surface);padding:2px 8px;border-radius:4px;color:var(--accent-soft);font-size:.82rem;font-family:"SF Mono",Menlo,monospace}
+a{color:var(--accent-soft)}
+.login-wrap{max-width:420px;margin:15vh auto;text-align:center;padding:0 20px}
+.login-wrap h1{font-size:1.8rem;margin:20px 0 8px}
+.login-wrap p{color:var(--muted);margin:0 0 30px}
+.login-wrap input{text-align:center;letter-spacing:.3em;font-size:1.1rem}
+.login-wrap button{width:100%;margin-top:20px;padding:14px}
+#loginErr{color:var(--danger);font-size:.85rem;margin-top:10px;min-height:1.2em}
+</style>
+</head>
+<body>
+
+<section id="loginView" class="login-wrap">
+  <div class="brand">L U S S É</div>
+  <h1>Admin Panel</h1>
+  <p>Enter password to manage products</p>
+  <input id="pw" type="password" placeholder="••••••" autocomplete="off">
+  <button id="loginBtn">Enter</button>
+  <p id="loginErr"></p>
+</section>
+
+<div id="app" style="display:none">
+  <header class="wrap">
+    <div>
+      <div class="brand" style="font-size:1.1rem">L U S S É</div>
+      <h1 style="margin-top:4px">Products</h1>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="addBtn">+ New product</button>
+      <button class="ghost" id="exportBtn">Publish changes</button>
+      <button class="ghost" id="reloadBtn">Reload</button>
+      <button class="ghost" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+  <main class="wrap">
+
+    <div id="list" class="list"></div>
+
+    <!-- editor -->
+    <div id="editor" class="card" style="display:none">
+      <h2 id="edTitle">Edit product</h2>
+      <input id="ed_id" type="hidden">
+      <label>Product name</label>
+      <input id="ed_name" placeholder="Clip-in Hair Extensions Set">
+      <div class="grid">
+        <div>
+          <label>Method (short)</label>
+          <input id="ed_method" placeholder="Clip-in">
+        </div>
+        <div>
+          <label>SKU (optional)</label>
+          <input id="ed_sku" placeholder="LUSSE-CLIP-8P">
+        </div>
+        <div>
+          <label>Price from (AED)</label>
+          <input id="ed_priceFrom" type="number" min="0" placeholder="990">
+        </div>
+        <div>
+          <label>Price to (AED, optional)</label>
+          <input id="ed_priceTo" type="number" min="0" placeholder="2050">
+        </div>
+        <div>
+          <label>Fit time</label>
+          <input id="ed_fitTime" placeholder="5–10 min">
+        </div>
+        <div>
+          <label>Wear time</label>
+          <input id="ed_wearTime" placeholder="On & off · reusable">
+        </div>
+      </div>
+      <label>Short description (1 line)</label>
+      <input id="ed_shortDesc" placeholder="Full volume in minutes, no commitment.">
+      <label>Long description</label>
+      <textarea id="ed_longDesc" placeholder="Detailed product description…"></textarea>
+      <label>Available lengths (comma separated)</label>
+      <input id="ed_lengths" placeholder='14",16",18",20",22",24"'>
+      <label>Image URL (optional — leave blank to use default)</label>
+      <input id="ed_image" placeholder="https://lussehair.com/videos/vid1.mp4 or /product-clip.jpg">
+      <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
+        <button id="saveBtn">Save product</button>
+        <button class="ghost" id="cancelBtn">Cancel</button>
+      </div>
+    </div>
+
+    <!-- export -->
+    <div id="exportPanel" class="card" style="display:none">
+      <h2>Publish changes</h2>
+      <p class="hint">Copy the JSON below, paste it into <code>products.json</code> on GitHub, and Vercel will auto-deploy in ~30 seconds.</p>
+      <div class="step"><div class="n">1</div><div class="b"><b>Copy the JSON</b><p>Click the copy button below.</p></div></div>
+      <div class="step"><div class="n">2</div><div class="b"><b>Open products.json on GitHub</b><p><a href="https://github.com/octavion-erp/lusse/edit/main/products.json" target="_blank" rel="noopener">Click here to open it →</a></p></div></div>
+      <div class="step"><div class="n">3</div><div class="b"><b>Paste and commit</b><p>Select all (Cmd+A), paste (Cmd+V), then click <code>Commit changes…</code> at the bottom.</p></div></div>
+      <div class="step"><div class="n">4</div><div class="b"><b>Wait 30 seconds</b><p>Vercel deploys automatically. Refresh <a href="https://lussehair.com" target="_blank">lussehair.com</a> to see the changes.</p></div></div>
+      <div class="export-box" style="margin-top:20px">
+        <textarea id="jsonOut" readonly></textarea>
+        <div class="export-actions">
+          <button id="copyBtn">Copy JSON</button>
+          <button class="ghost" id="downloadBtn">Download products.json</button>
+          <button class="ghost" id="closeExport">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ---- config ----
+const ADMIN_HASH="6b83bcb3b4a9a1c4b6c0dc2c8f0f8b0e1d7d3d5e5a2c5d3d1c1c9e3c3e1a5b7d"; // sha256('lusse2026'), change later
+const DEFAULT_PW="lusse2026";
+const KEY="lusse-admin";
+const DATA_KEY="lusse-products";
+
+// ---- auth (super simple; change password in code) ----
+async function sha256(s){const b=new TextEncoder().encode(s);const h=await crypto.subtle.digest("SHA-256",b);return[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+document.getElementById("loginBtn").onclick=async()=>{
+  const pw=document.getElementById("pw").value;
+  if(pw===DEFAULT_PW){ sessionStorage.setItem(KEY,"1"); show(); }
+  else document.getElementById("loginErr").textContent="Wrong password.";
+};
+document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("loginBtn").click()});
+document.getElementById("logoutBtn").onclick=()=>{sessionStorage.removeItem(KEY);location.reload()};
+
+if(sessionStorage.getItem(KEY)) show();
+
+async function show(){
+  document.getElementById("loginView").style.display="none";
+  document.getElementById("app").style.display="block";
+  await load();
+}
+
+// ---- data ----
+let data={products:[],currency:"AED",whatsapp:"971542005442",updated:""};
+async function load(){
+  const cached=localStorage.getItem(DATA_KEY);
+  if(cached){data=JSON.parse(cached);}
+  else{
+    try{const r=await fetch("/products.json?_="+Date.now()); data=await r.json();}catch(e){}
+  }
+  render();
+}
+function saveLocal(){localStorage.setItem(DATA_KEY,JSON.stringify(data))}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+
+// ---- list ----
+function render(){
+  const list=document.getElementById("list");
+  if(!data.products.length){list.innerHTML='<div class="card" style="text-align:center;color:var(--muted)">No products yet. Click "+ New product" to add your first one.</div>';return}
+  list.innerHTML=data.products.map(p=>`
+    <div class="p-row">
+      <div>
+        <div class="method">${esc(p.method||"")}</div>
+        <h3>${esc(p.name)}</h3>
+        <div class="price">AED ${p.priceFrom||0}${p.priceTo?` – ${p.priceTo}`:""}</div>
+      </div>
+      <div class="row-actions">
+        <button class="ghost" onclick="editP('${p.id}')">Edit</button>
+        <button class="danger" onclick="delP('${p.id}')">Delete</button>
+      </div>
+    </div>`).join("");
+}
+const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+// ---- add/edit ----
+document.getElementById("addBtn").onclick=()=>openEd(null);
+document.getElementById("cancelBtn").onclick=()=>document.getElementById("editor").style.display="none";
+window.editP=id=>openEd(data.products.find(p=>p.id===id));
+window.delP=id=>{if(confirm("Delete this product?")){data.products=data.products.filter(p=>p.id!==id);saveLocal();render();toast("Deleted")}};
+
+function openEd(p){
+  document.getElementById("editor").style.display="block";
+  document.getElementById("edTitle").textContent=p?"Edit product":"New product";
+  const v=(k,d="")=>document.getElementById("ed_"+k).value=p?(p[k]??d):d;
+  v("id",p?p.id:"");v("name");v("method");v("sku");v("priceFrom");v("priceTo");v("fitTime");v("wearTime");v("shortDesc");v("longDesc");v("image");
+  document.getElementById("ed_lengths").value=p?(p.lengths||[]).join(","):"";
+  document.getElementById("editor").scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("saveBtn").onclick=()=>{
+  const val=k=>document.getElementById("ed_"+k).value.trim();
+  const name=val("name");
+  if(!name){toast("Name required");return}
+  const id=val("id")||name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const p={id,name,method:val("method"),sku:val("sku"),
+    priceFrom:+val("priceFrom")||0,priceTo:+val("priceTo")||undefined,
+    fitTime:val("fitTime"),wearTime:val("wearTime"),
+    shortDesc:val("shortDesc"),longDesc:val("longDesc"),image:val("image"),
+    lengths:val("lengths").split(",").map(s=>s.trim()).filter(Boolean)};
+  if(!p.priceTo)delete p.priceTo;
+  const i=data.products.findIndex(x=>x.id===id);
+  if(i>=0)data.products[i]=p; else data.products.push(p);
+  data.updated=new Date().toISOString().slice(0,10);
+  saveLocal();render();
+  document.getElementById("editor").style.display="none";
+  toast(i>=0?"Updated":"Added");
+};
+
+document.getElementById("reloadBtn").onclick=async()=>{
+  if(confirm("Discard local edits and reload from server?")){localStorage.removeItem(DATA_KEY);await load();toast("Reloaded")}
+};
+
+// ---- export ----
+document.getElementById("exportBtn").onclick=()=>{
+  document.getElementById("jsonOut").value=JSON.stringify(data,null,2);
+  document.getElementById("exportPanel").style.display="block";
+  document.getElementById("exportPanel").scrollIntoView({behavior:"smooth"});
+};
+document.getElementById("closeExport").onclick=()=>document.getElementById("exportPanel").style.display="none";
+document.getElementById("copyBtn").onclick=async()=>{
+  await navigator.clipboard.writeText(document.getElementById("jsonOut").value);toast("Copied JSON")
+};
+document.getElementById("downloadBtn").onclick=()=>{
+  const b=new Blob([document.getElementById("jsonOut").value],{type:"application/json"});
+  const u=URL.createObjectURL(b);const a=document.createElement("a");
+  a.href=u;a.download="products.json";a.click();URL.revokeObjectURL(u);
+};
+</script>
+</body>
+</html>

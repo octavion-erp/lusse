@@ -1,0 +1,73 @@
+{
+  "updated": "2026-09-12",
+  "currency": "AED",
+  "whatsapp": "971542005442",
+  "products": [
+    {
+      "id": "clip-in-set",
+      "name": "Clip-in Hair Extensions Set",
+      "method": "Clip-in",
+      "priceFrom": 990,
+      "priceTo": 2050,
+      "shortDesc": "8-piece double-drawn Remy clip-in set — no commitment, full volume in minutes.",
+      "longDesc": "Our signature 8-piece clip-in set in 100% Remy human hair. Silicone-lined wefts that place and remove yourself in minutes, colour-matched to your natural hair. Available in lengths 14–24 inches.",
+      "wearTime": "On & off · reusable",
+      "fitTime": "5–10 min",
+      "lengths": ["14\"", "16\"", "18\"", "20\"", "22\"", "24\""],
+      "image": "",
+      "sku": "LUSSE-CLIP-8P"
+    },
+    {
+      "id": "tape-in",
+      "name": "Tape-in Extensions",
+      "method": "Tape-in",
+      "priceFrom": 1290,
+      "shortDesc": "Feather-thin panels at the root — invisible under fine hair.",
+      "longDesc": "Ultra-flat panels sandwiched at the root with medical-grade adhesive. Repositioned as your hair grows out. Ideal for fine to medium hair.",
+      "wearTime": "6–8 weeks between move-ups",
+      "fitTime": "45–60 min",
+      "lengths": ["16\"", "18\"", "20\"", "22\""],
+      "image": "",
+      "sku": "LUSSE-TAPE-40P"
+    },
+    {
+      "id": "hand-tied-weft",
+      "name": "Hand-tied Weft",
+      "method": "Hand-tied weft",
+      "priceFrom": 1780,
+      "shortDesc": "Ultra-flat rows sewn to a beaded row — seamless all-over thickness.",
+      "longDesc": "Rows of hand-tied hair sewn onto a beaded foundation. The stylist's favourite for seamless density from crown to tip. Bespoke fitting per client.",
+      "wearTime": "7–9 weeks between move-ups",
+      "fitTime": "2–3 hours",
+      "lengths": ["18\"", "20\"", "22\"", "24\""],
+      "image": "",
+      "sku": "LUSSE-HTW"
+    },
+    {
+      "id": "halo",
+      "name": "Halo Hair Extension",
+      "method": "Halo",
+      "priceFrom": 1150,
+      "shortDesc": "One weft on an invisible wire — on and off in seconds. Gentlest of all.",
+      "longDesc": "A single weft on a fine transparent wire that sits under the crown. No glue, no clips, no tension. Perfect for daily volume without commitment.",
+      "wearTime": "Daily on & off · no damage",
+      "fitTime": "2 minutes",
+      "lengths": ["16\"", "20\"", "22\""],
+      "image": "",
+      "sku": "LUSSE-HALO"
+    },
+    {
+      "id": "keratin-i-tip",
+      "name": "Keratin I-tip Bonds",
+      "method": "Keratin I-tip",
+      "priceFrom": 2050,
+      "shortDesc": "Individual strands bonded one by one — the most natural movement and parting.",
+      "longDesc": "150–200 individual Remy strands bonded to your natural hair with keratin. The longest-wearing method with the most natural fall, parting, and movement.",
+      "wearTime": "3–4 months per install",
+      "fitTime": "3–4 hours",
+      "lengths": ["18\"", "20\"", "22\"", "24\""],
+      "image": "",
+      "sku": "LUSSE-KTIP"
+    }
+  ]
+}
