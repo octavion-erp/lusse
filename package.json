@@ -1,0 +1,7 @@
+{
+  "name": "lusse-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LUSSÉ — 100% Human Hair Extensions website",
+  "engines": {"node": ">=18"}
+}
