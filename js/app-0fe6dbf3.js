@@ -257,6 +257,6 @@ function pathToView(p){p=(p||"/").replace(/^\/+|\/+$/g,"");return p||"home";}
   }
 
   /* ---------- init ---------- */
-  var start=(location.hash||"#home").slice(1);
+  var start=(location.hash||"").slice(1)||pathToView(location.pathname);
   go(TITLES[start]?start:"home",false);
 })();
