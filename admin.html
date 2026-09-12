@@ -202,6 +202,10 @@ textarea.f{min-height:80px;resize:vertical;line-height:1.55}
   .pg-head h1{font-size:1.25rem}
 }
 
+.setup-banner{background:linear-gradient(135deg,rgba(224,168,102,.14),rgba(224,168,102,.06));border:1px solid rgba(224,168,102,.35);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.setup-banner b{color:var(--ink);font-weight:600;font-size:.95rem;display:block}
+.setup-banner p{margin:2px 0 0;color:var(--ink-2);font-size:.83rem;line-height:1.55;max-width:64ch}
+.setup-banner .btn{white-space:nowrap}
 .hide{display:none!important}
 </style>
 </head>
@@ -274,6 +278,14 @@ textarea.f{min-height:80px;resize:vertical;line-height:1.55}
     </div>
 
     <div class="content">
+      <div id="setupBanner" class="setup-banner hide">
+        <div>
+          <b>Storage not connected yet</b>
+          <p>Open Vercel dashboard → Storage → Create Blob store (takes 20 seconds). After that, Publish saves changes instantly.</p>
+        </div>
+        <a class="btn primary" href="#" target="_blank" id="setupBtn">Enable now →</a>
+      </div>
+
       <!-- PRODUCTS view -->
       <section id="viewProducts">
         <div class="pg-head">
@@ -407,17 +419,32 @@ function login(){
   else document.getElementById("loginErr").textContent="Incorrect password.";
 }
 async function enter(){
+  checkSetup();
+
   document.getElementById("loginView").classList.add("hide");
   document.getElementById("app").classList.remove("hide");
   await load();
 }
 
 let data={products:[],currency:"AED",whatsapp:"971542005442",updated:""};
+
+async function checkSetup(){
+  try{
+    const r=await fetch("/api/status",{cache:"no-store"});
+    if(!r.ok) return;
+    const j=await r.json();
+    const banner=document.getElementById("setupBanner");
+    const btn=document.getElementById("setupBtn");
+    if(j.ready){ banner.classList.add("hide"); }
+    else { banner.classList.remove("hide"); if(btn && j.setupUrl) btn.href=j.setupUrl; }
+  }catch(e){}
+}
+
 async function load(){
   const cached=localStorage.getItem(DATA_KEY);
   if(cached){try{data=JSON.parse(cached)}catch(e){}}
   else{
-    try{const r=await fetch("/api/products?_="+Date.now(),{cache:"no-store"}); data=await r.json();}catch(e){}
+    try{const r=await fetch("/api/products?t="+Date.now(),{cache:"no-store"}); data=await r.json();}catch(e){}
   }
   render();
 }

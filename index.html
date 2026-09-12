@@ -1095,7 +1095,7 @@ H0% Remy human hair extensions — clip-in, tape-in, hand-tied weft, halo and ke
 <script>
 (async function(){
   try{
-    var r=await fetch("/api/products?_="+Date.now(),{cache:"no-store"});
+    var r=await fetch("/api/products?t="+Date.now(),{cache:"no-store"});
     if(!r.ok) return;
     var d=await r.json();
     var wa=d.whatsapp||"971542005442", cur=d.currency||"AED";
