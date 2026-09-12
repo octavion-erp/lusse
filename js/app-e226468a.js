@@ -176,10 +176,14 @@
     window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
     syncStrands(name);
     closeMenu();
-    if(push!==false && location.hash!=="#"+name) history.replaceState(null,"","#"+name);
+    if(push!==false){
+      var url=(name==="home"?"/":"/"+name);
+      if(location.pathname!==url) history.pushState(null,"",url);
+    }
   }
   navA.forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();go(a.getAttribute("data-go"));});});
-  window.addEventListener("hashchange",function(){go((location.hash||"#home").slice(1),false);});
+  window.addEventListener("popstate",function(){go(pathToView(location.pathname),false);});
+function pathToView(p){p=(p||"/").replace(/^\/+|\/+$/g,"");return p||"home";}
 
   /* ---------- mobile menu ---------- */
   var burger=document.getElementById("burger"), navLinks=document.getElementById("navLinks");
