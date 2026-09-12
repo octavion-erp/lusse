@@ -1104,6 +1104,7 @@
           : '<img loading="lazy" alt="'+esc(p.name)+' — LUSSÉ Remy human hair" src="'+m.url+'">';
       }).join("") + '</div>' : "";
       var img = mediaArr[0] ? mediaArr[0].url : "";
+      var lens=(p.lengths||[]).map(function(l){return '<span>'+esc(l)+'</span>'}).join("");
       html+='<article class="pcard" id="p-'+p.id+'">'+ mediaHtml +
         '<div class="method">'+esc(p.method||"Hair extensions")+'</div>'+
         '<h3>'+esc(p.name)+'</h3>'+
