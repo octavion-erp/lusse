@@ -245,10 +245,6 @@ textarea.f{min-height:80px;resize:vertical;line-height:1.55}
       <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
       View live site
     </a>
-    <a class="sb-item" href="https://github.com/octavion-erp/lusse" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      Source (GitHub)
-    </a>
     <div class="sb-foot">
       <button class="sb-item" id="logoutBtn">
         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
@@ -380,7 +376,7 @@ textarea.f{min-height:80px;resize:vertical;line-height:1.55}
       <button class="close-x" id="pubClose">×</button>
     </div>
     <div class="modal-body">
-      <p>Your changes will go live in 15–30 seconds.</p>
+      <p>Saves instantly to lussehair.com storage. Visitors see it on their next page load.</p>
       <div id="pubLog" class="pub-log"></div>
     </div>
     <div class="modal-foot">
@@ -421,7 +417,7 @@ async function load(){
   const cached=localStorage.getItem(DATA_KEY);
   if(cached){try{data=JSON.parse(cached)}catch(e){}}
   else{
-    try{const r=await fetch("/products.json?_="+Date.now(),{cache:"no-store"}); data=await r.json();}catch(e){}
+    try{const r=await fetch("/api/products?_="+Date.now(),{cache:"no-store"}); data=await r.json();}catch(e){}
   }
   render();
 }
@@ -554,14 +550,11 @@ document.getElementById("publishNowBtn").onclick=async()=>{
     const r=await fetch("/api/publish",{method:"POST",headers:{"Content-Type":"application/json","x-admin-password":pw},body:JSON.stringify(data)});
     let j={}; try{j=await r.json()}catch(e){}
     if(!r.ok){
-      log.innerHTML+=`<br><span class="err">✗ ${esc(j.error||"HTTP "+r.status)}</span>`+(j.detail?`<br><span class="err" style="opacity:.7">${esc(j.detail)}</span>`:"");
+      log.innerHTML+=`<br><span class="err">✗ ${esc(j.error||"HTTP "+r.status)}</span>`+(j.setup?`<br><a href="https://vercel.com/sirizonecom-2195s-projects/lusse/stores" target="_blank">→ Enable storage (one click)</a>`:(j.detail?`<br><span class="err" style="opacity:.7">${esc(j.detail)}</span>`:""));
       btn.disabled=false; btn.textContent="Publish now"; return;
     }
-    log.innerHTML+='<br><span class="ok">✓ Committed to repository.</span><br><span class="step">→ Deploying (15–30 seconds)…</span>';
-    setTimeout(()=>{
-      log.innerHTML+='<br><span class="ok">✓ Published. Refresh <a href="https://lussehair.com" target="_blank">lussehair.com</a> to see it.</span>';
-      btn.textContent="Published ✓";
-    }, 15000);
+    log.innerHTML+='<br><span class="ok">✓ Saved to lussehair.com storage.</span><br><span class="ok">✓ Live now — <a href="https://lussehair.com" target="_blank">open lussehair.com</a> to verify.</span>';
+    btn.textContent="Published ✓"; btn.disabled=true;
   }catch(e){
     log.innerHTML+=`<br><span class="err">✗ ${esc(String(e))}</span>`;
     btn.disabled=false; btn.textContent="Publish now";
