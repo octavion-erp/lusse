@@ -36,7 +36,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'sha256-imZDAziSDAjW8Rx7gPLlQn7yDCKX2Q8Rov775Van0Zw=' 'sha256-hJTaVigIdqnYAIr675I1BR/QBmn+O9GltQWHVsIXsG8=' 'sha256-Uu1gZn6tLmrls6JyxUvB1/K+mas3KR4pwGbwupgNIz8=' 'sha256-rj+bGOS+aCkurURo1JNhjNc2RaFzjrK8g5f0WrBm5z4=' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.public.blob.vercel-storage.com; media-src 'self' blob: https://*.public.blob.vercel-storage.com; connect-src 'self' https://*.vercel-insights.com https://vitals.vercel-insights.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formsubmit.co"
+          "value": "default-src 'self'; script-src 'self' 'sha256-xCObSstu4s1hc6Hu+P28pPDyYnXbBLtpSEaka40vL1I=' 'sha256-UKlqHFKMTICUwtixOBopqOVA0RzqAKlwmLm/fzdeVnE=' 'sha256-Uu1gZn6tLmrls6JyxUvB1/K+mas3KR4pwGbwupgNIz8=' 'sha256-rj+bGOS+aCkurURo1JNhjNc2RaFzjrK8g5f0WrBm5z4=' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.public.blob.vercel-storage.com; media-src 'self' blob: https://*.public.blob.vercel-storage.com; connect-src 'self' https://*.vercel-insights.com https://vitals.vercel-insights.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formsubmit.co"
         }
       ]
     },
