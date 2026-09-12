@@ -141,18 +141,19 @@ tbody tr:hover{background:var(--surface)}
 .act-cell .btn{margin-left:4px}
 
 /* Card layout on narrow */
+.m-meta{display:none}
 @media(max-width:700px){
-  th{display:none}
-  td{display:block;padding:8px 14px;border:0}
-  tr{display:block;padding:12px 4px;border-bottom:1px solid var(--border);position:relative}
+  thead{display:none}
+  table,tbody{display:block}
+  tr{display:grid;grid-template-columns:44px 1fr;grid-template-areas:"thumb name" "act act";column-gap:12px;row-gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)}
   tr:last-child{border-bottom:0}
-  td[data-thumb]{position:absolute;top:14px;left:14px;padding:0}
-  td[data-thumb]+td{padding-left:64px}
-  td[data-meta]{padding-left:64px;color:var(--text-3);font-size:12px}
-  td[data-meta] span{display:inline-block;margin-right:14px}
-  td[data-meta] span b{color:var(--text-2);font-weight:500}
-  td.act-cell{padding-top:10px;padding-left:64px;text-align:left}
-  td.act-cell .btn{margin-left:0;margin-right:6px}
+  td{display:block;padding:0;border:0}
+  td.c-thumb{grid-area:thumb}
+  td.c-name{grid-area:name;min-width:0}
+  .m-meta{display:block;font-size:12px;color:var(--text-3);margin-top:4px}
+  td.c-method,td.c-price,td.c-status{display:none}
+  td.act-cell{grid-area:act;text-align:left}
+  td.act-cell .btn{margin:0 6px 0 0}
 }
 
 /* Empty */
@@ -513,19 +514,17 @@ function render(){
       : `<div class="p-thumb p-thumb-empty">L</div>`;
     const price=x.priceTo?`AED ${x.priceFrom} – ${x.priceTo}`:`AED ${x.priceFrom||0}`;
     return `<tr>
-      <td data-thumb>${thumb}</td>
-      <td><div class="p-name">${esc(x.name)}</div><div class="p-sku">${esc(x.sku||x.id)}</div></td>
-      <td data-meta><span><b>Method:</b> ${esc(x.method||"—")}</span> <span><b>Price:</b> ${price}</span></td>
-      <td class="price">${price}</td>
-      <td><span class="chip live">Live</span></td>
+      <td class="c-thumb">${thumb}</td>
+      <td class="c-name"><div class="p-name">${esc(x.name)}</div><div class="p-sku">${esc(x.sku||x.id)}</div><div class="m-meta">${esc(x.method||"—")} · ${price}</div></td>
+      <td class="c-method">${esc(x.method||"—")}</td>
+      <td class="c-price price">${price}</td>
+      <td class="c-status"><span class="chip live">Live</span></td>
       <td class="act-cell">
         <button class="btn btn-secondary btn-sm" onclick="edit('${esc(x.id)}')">Edit</button>
         <button class="btn btn-danger btn-sm" onclick="del('${esc(x.id)}')">Delete</button>
       </td>
     </tr>`;
   }).join("")}</tbody></table>`;
-  // hide the two collapsed cells on wide + non-thumb data cells
-  document.querySelectorAll("td:nth-child(3):not([data-meta])").forEach(t=>t.dataset.meta="");
 }
 $("q").addEventListener("input",render);
 

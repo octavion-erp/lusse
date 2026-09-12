@@ -1116,7 +1116,7 @@
       // JSON-LD Product schema
       var offer={"@type":"Offer","priceCurrency":cur,"price":p.priceFrom,"availability":"https://schema.org/InStock","url":"https://lussehair.com/#p-"+p.id,"areaServed":["AE","SA"]};
       if(p.priceTo){ offer={"@type":"AggregateOffer","priceCurrency":cur,"lowPrice":p.priceFrom,"highPrice":p.priceTo,"availability":"https://schema.org/InStock","url":"https://lussehair.com/#p-"+p.id,"areaServed":["AE","SA"]}; }
-      schema.push({"@context":"https://schema.org","@type":"Product","name":p.name,"sku":p.sku||p.id,"description":p.longDesc||p.shortDesc||"","brand":{"@type":"Brand","name":"LUSSÉ"},"category":"Hair extensions",(img?"image":"_"):(img||""),"offers":offer});
+      var prod={"@context":"https://schema.org","@type":"Product","name":p.name,"sku":p.sku||p.id,"description":p.longDesc||p.shortDesc||"","brand":{"@type":"Brand","name":"LUSSÉ"},"category":"Hair extensions","offers":offer}; if(img) prod.image=img; schema.push(prod);
     });
     grid.innerHTML=html;
     var s=document.getElementById("productsSchema");
