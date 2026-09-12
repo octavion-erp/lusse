@@ -106,6 +106,7 @@ svg{display:block;flex-shrink:0}
 
 /* ==================== STATS ==================== */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:12px 14px}.stat-v{font-size:18px}}
 .stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px}
 .stat-k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-bottom:4px}
 .stat-v{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.02em}
