@@ -145,9 +145,10 @@ main[tabindex]:focus{outline:none}
   .hero-in{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;
     padding:clamp(64px,11vh,128px) clamp(20px,5vw,54px) clamp(58px,8vh,104px)}
   .hero .eyebrow{color:var(--accent-soft)}
-  .hero h1{color:var(--hero-ink);font-size:var(--step4);letter-spacing:-.01em;max-width:15ch}
+  .hero h1{color:var(--hero-ink);font-size:min(var(--step4),calc((100vw - 44px)/7.321));letter-spacing:-.01em;max-width:9.46em;text-wrap:wrap}
+  .hero h1 em{white-space:nowrap}
   .hero h1 em{font-style:italic;color:var(--accent-soft);font-weight:400}
-  .hero-lead{max-width:46ch;margin:26px 0 34px;font-size:var(--step1);font-weight:300;color:var(--hero-soft)}
+  .hero-lead{max-width:25em;margin:26px 0 34px;font-size:var(--step1);font-weight:300;color:var(--hero-soft)}
   .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
   .hero-trust{display:flex;gap:26px;flex-wrap:wrap;margin-top:44px;padding-top:26px;
     border-top:1px solid rgba(240,225,200,.14);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--hero-soft)}
