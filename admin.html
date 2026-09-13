@@ -219,6 +219,31 @@ label.hint{font-weight:400;color:var(--text-3);font-size:12px;margin-top:4px;mar
 .info-banner.on{display:block}
 .info-banner b{color:var(--green)}
 
+
+.page-view{display:block}
+.page-view[hidden]{display:none}
+.settings-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px}
+.settings-section{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--border)}
+.settings-section:last-child{border-bottom:0;padding-bottom:0;margin-bottom:0}
+.settings-section h3{margin:0 0 4px;color:var(--text);font-size:15px;font-weight:700}
+.section-sub{color:var(--text-3);font-size:13px;margin:0 0 16px}
+.hint-inline{color:var(--text-3);font-size:11px;font-weight:400;margin-inline-start:4px}
+.brand-note{background:rgba(203,167,102,.1);border:1px solid rgba(203,167,102,.3);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--text-2);line-height:1.7}
+.brand-note b{color:var(--accent)}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.brand-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.brand-preview{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;padding:32px 20px;min-height:180px}
+.brand-preview img{color:var(--text);filter:drop-shadow(0 0 0 var(--text))}
+.brand-info{padding:16px 18px}
+.brand-info h4{margin:0 0 4px;color:var(--text);font-size:14px;font-weight:700}
+.brand-info p{margin:0 0 12px;color:var(--text-3);font-size:12px;line-height:1.5}
+.brand-links{display:flex;gap:8px;flex-wrap:wrap}
+.brand-link{background:var(--surface-2);border:1px solid var(--border-2);color:var(--text-2);padding:6px 10px;border-radius:6px;font-size:12px;font-weight:500;text-decoration:none;transition:.15s}
+.brand-link:hover{background:var(--surface-3);color:var(--text);border-color:var(--accent)}
+.brand-guide{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 24px}
+.brand-guide h3{margin:0 0 12px;color:var(--text);font-size:15px;font-weight:700}
+.brand-guide ul{margin:0;padding:0;list-style:none}
+.brand-guide li{padding:4px 0;color:var(--text-2);font-size:13px;line-height:1.7}
 .hide{display:none!important}
 
 /* pending changes chip */
@@ -259,6 +284,14 @@ label.hint{font-weight:400;color:var(--text-3);font-size:12px;margin-top:4px;mar
       <svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/><path d="M3 7l9 4 9-4"/><path d="M12 11v10"/></svg>
       المنتجات
     </button>
+    <button class="sb-item" data-view="contact">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      جهات الاتصال
+    </button>
+    <button class="sb-item" data-view="brand">
+      <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/><path d="M12 11v5"/></svg>
+      شعار الفيزيت كارد
+    </button>
     <div class="sb-section">الموقع</div>
     <a class="sb-item" href="https://lussehair.com" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
@@ -293,6 +326,7 @@ label.hint{font-weight:400;color:var(--text-3);font-size:12px;margin-top:4px;mar
     </div>
 
     <div class="content">
+      <div id="page-products" class="page-view">
       <div id="setupBanner" class="setup-banner">
         <div>
           <b>التخزين غير مفعّل</b>
@@ -328,7 +362,207 @@ label.hint{font-weight:400;color:var(--text-3);font-size:12px;margin-top:4px;mar
         </div>
         <div id="tbl"></div>
       </div>
-    </div>
+    
+      </div>
+
+      <!-- ==================== CONTACT SETTINGS PAGE ==================== -->
+      <div id="page-contact" class="page-view" hidden>
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">جهات الاتصال والسوشيال ميديا</h1>
+            <p class="page-desc">هذه المعلومات تظهر على الموقع تلقائياً بعد الحفظ.</p>
+          </div>
+          <button class="btn btn-primary" id="saveContactBtn">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            حفظ ونشر
+          </button>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-section">
+            <h3>معلومات أساسية</h3>
+            <div class="field-row">
+              <div>
+                <label for="s_phone">رقم الهاتف</label>
+                <input class="inp" id="s_phone" placeholder="+971 54 200 5442">
+              </div>
+              <div>
+                <label for="s_whatsapp">رقم الواتساب <span class="hint-inline">(بدون + أو مسافات)</span></label>
+                <input class="inp" id="s_whatsapp" placeholder="971542005442" inputmode="numeric">
+              </div>
+            </div>
+            <div class="field-row">
+              <div>
+                <label for="s_email">البريد الإلكتروني</label>
+                <input class="inp" id="s_email" placeholder="info@lussehair.com" type="email">
+              </div>
+              <div>
+                <label for="s_address">العنوان</label>
+                <input class="inp" id="s_address" placeholder="Dubai, UAE">
+              </div>
+            </div>
+            <div class="field">
+              <label for="s_hours">ساعات العمل</label>
+              <input class="inp" id="s_hours" placeholder="Tue–Sun · 10 am – 8 pm">
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>السوشيال ميديا</h3>
+            <p class="section-sub">اتركي الحقل فارغاً إذا ما عندك حساب — لن يظهر على الموقع.</p>
+            <div class="field-row">
+              <div>
+                <label>Instagram</label>
+                <input class="inp" id="s_instagram" placeholder="https://www.instagram.com/lussehaircom">
+              </div>
+              <div>
+                <label>TikTok</label>
+                <input class="inp" id="s_tiktok" placeholder="https://www.tiktok.com/@lussehair">
+              </div>
+              <div>
+                <label>Facebook</label>
+                <input class="inp" id="s_facebook" placeholder="https://facebook.com/lussehair">
+              </div>
+              <div>
+                <label>Snapchat</label>
+                <input class="inp" id="s_snapchat" placeholder="https://snapchat.com/add/lussehair">
+              </div>
+              <div>
+                <label>X / Twitter</label>
+                <input class="inp" id="s_x" placeholder="https://x.com/lussehair">
+              </div>
+              <div>
+                <label>YouTube</label>
+                <input class="inp" id="s_youtube" placeholder="https://youtube.com/@lussehair">
+              </div>
+              <div>
+                <label>Threads</label>
+                <input class="inp" id="s_threads" placeholder="https://threads.net/@lussehaircom">
+              </div>
+              <div>
+                <label>Pinterest</label>
+                <input class="inp" id="s_pinterest" placeholder="https://pinterest.com/lussehair">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== BRAND / BUSINESS CARD LOGO PAGE ==================== -->
+      <div id="page-brand" class="page-view" hidden>
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">شعار للفيزيت كارد والمطبوعات</h1>
+            <p class="page-desc">شعار LUSSÉ بخلفية شفافة — SVG وPNG بدقة عالية جاهزة للمصمم.</p>
+          </div>
+        </div>
+
+        <div class="brand-note">
+          <b>ملاحظة:</b> صيغة SVG هي الأفضل لأي مقاس (كارت، بانر، لافتة). صيغة PNG بخلفية شفافة تستخدم لو المصمم ما يقبل SVG.
+        </div>
+
+        <div class="brand-grid">
+          <div class="brand-card" style="--bg:#140e09;--text:#cba766">
+            <div class="brand-preview">
+              <img src="/brand/lusse-logo-gold.svg" alt="LUSSÉ gold" style="width:150px">
+            </div>
+            <div class="brand-info">
+              <h4>ذهبي · اللون الأساسي</h4>
+              <p>للطباعة على أسود أو داكن (كارت أسود، مغلف بني)</p>
+              <div class="brand-links">
+                <a href="/brand/lusse-logo-gold.svg" download class="brand-link">SVG</a>
+                <a href="/brand/lusse-logo-gold-3000.png" download class="brand-link">PNG · 3000px</a>
+                <a href="/brand/lusse-logo-gold-1200.png" download class="brand-link">PNG · 1200px</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card" style="--bg:#0a0906;--text:#e2c78a">
+            <div class="brand-preview">
+              <img src="/brand/lusse-logo-champagne.svg" alt="LUSSÉ champagne" style="width:150px">
+            </div>
+            <div class="brand-info">
+              <h4>شامبانيا · ذهبي فاتح</h4>
+              <p>ذهبي فاتح للتباين على الأسود العميق</p>
+              <div class="brand-links">
+                <a href="/brand/lusse-logo-champagne.svg" download class="brand-link">SVG</a>
+                <a href="/brand/lusse-logo-champagne-3000.png" download class="brand-link">PNG · 3000px</a>
+                <a href="/brand/lusse-logo-champagne-1200.png" download class="brand-link">PNG · 1200px</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card" style="--bg:#f5eee1;--text:#140e09">
+            <div class="brand-preview">
+              <img src="/brand/lusse-logo-black.svg" alt="LUSSÉ black" style="width:150px">
+            </div>
+            <div class="brand-info">
+              <h4>أسود اسبريسو</h4>
+              <p>للطباعة على خلفيات فاتحة (كارت كريمي، أبيض، ذهبي)</p>
+              <div class="brand-links">
+                <a href="/brand/lusse-logo-black.svg" download class="brand-link">SVG</a>
+                <a href="/brand/lusse-logo-black-3000.png" download class="brand-link">PNG · 3000px</a>
+                <a href="/brand/lusse-logo-black-1200.png" download class="brand-link">PNG · 1200px</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card" style="--bg:#c8a877;--text:#ffffff">
+            <div class="brand-preview">
+              <img src="/brand/lusse-logo-white.svg" alt="LUSSÉ white" style="width:150px">
+            </div>
+            <div class="brand-info">
+              <h4>أبيض</h4>
+              <p>على صور أو خلفيات ملونة داكنة</p>
+              <div class="brand-links">
+                <a href="/brand/lusse-logo-white.svg" download class="brand-link">SVG</a>
+                <a href="/brand/lusse-logo-white-3000.png" download class="brand-link">PNG · 3000px</a>
+                <a href="/brand/lusse-logo-white-1200.png" download class="brand-link">PNG · 1200px</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card" style="--bg:#ffffff;--text:#000000">
+            <div class="brand-preview">
+              <img src="/brand/lusse-logo-mono-black.svg" alt="LUSSÉ mono black" style="width:150px">
+            </div>
+            <div class="brand-info">
+              <h4>أسود نقي · للفويل والحفر</h4>
+              <p>للطباعة بالفويل الذهبي أو الحفر (letterpress)</p>
+              <div class="brand-links">
+                <a href="/brand/lusse-logo-mono-black.svg" download class="brand-link">SVG</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card" style="--bg:#1e1b18;--text:#cba766">
+            <div class="brand-preview">
+              <div style="color:#cba766;width:150px">
+                <img src="/brand/lusse-logo-currentcolor.svg" alt="LUSSÉ current" style="width:100%;filter:none">
+              </div>
+            </div>
+            <div class="brand-info">
+              <h4>currentColor · للمطورين</h4>
+              <p>يأخذ لونه من CSS تلقائياً (لدمج الشعار في المواقع أو التطبيقات)</p>
+              <div class="brand-links">
+                <a href="/brand/lusse-logo-currentcolor.svg" download class="brand-link">SVG</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="brand-guide">
+          <h3>إرشادات الاستخدام</h3>
+          <ul>
+            <li>✓ اتركي مساحة فارغة حول الشعار على الأقل بمقدار طول الحرف "L"</li>
+            <li>✓ لا تضيفي حدود، ظلال، أو تدرجات ملونة على الشعار</li>
+            <li>✓ لا تشوّهي نسبة العرض إلى الطول</li>
+            <li>✓ الحد الأدنى للحجم على الطباعة: 15mm × 15mm</li>
+            <li>✓ الحد الأدنى للحجم على الشاشة: 60px × 60px</li>
+          </ul>
+        </div>
+      </div>
+</div>
   </div>
 </div>
 
@@ -680,6 +914,67 @@ async function publishNow(silent){
     return false;
   }
 }
+
+
+// ---------- VIEW SWITCHING ----------
+const sbItems=document.querySelectorAll('.sb-item[data-view]');
+const pageViews={products:$("page-products"),contact:$("page-contact"),brand:$("page-brand")};
+sbItems.forEach(b=>b.onclick=()=>{
+  const v=b.dataset.view;
+  sbItems.forEach(x=>x.classList.toggle("active",x===b));
+  Object.entries(pageViews).forEach(([k,el])=>{if(el)el.hidden=k!==v});
+  $("sb").classList.remove("open");$("sbScrim").classList.remove("on");
+  if(v==="contact") loadSettings();
+});
+
+// ---------- SETTINGS ----------
+async function loadSettings(){
+  try{
+    const r=await fetch("/api/settings?t="+Date.now(),{cache:"no-store"});
+    const s=await r.json();
+    $("s_phone").value=s.phone||"";
+    $("s_whatsapp").value=s.whatsapp||"";
+    $("s_email").value=s.email||"";
+    $("s_address").value=s.address||"";
+    $("s_hours").value=s.hours||"";
+    const soc=s.social||{};
+    ["instagram","tiktok","facebook","snapchat","x","youtube","threads","pinterest"].forEach(k=>{
+      const el=$(("s_"+k)); if(el)el.value=soc[k]||"";
+    });
+  }catch(e){toast("فشل تحميل الإعدادات","err")}
+}
+
+$("saveContactBtn").onclick=async()=>{
+  const btn=$("saveContactBtn"); btn.disabled=true; btn.textContent="جاري الحفظ…";
+  const body={
+    phone:$("s_phone").value.trim(),
+    whatsapp:$("s_whatsapp").value.trim(),
+    email:$("s_email").value.trim(),
+    address:$("s_address").value.trim(),
+    hours:$("s_hours").value.trim(),
+    social:{
+      instagram:$("s_instagram").value.trim(),
+      tiktok:$("s_tiktok").value.trim(),
+      facebook:$("s_facebook").value.trim(),
+      snapchat:$("s_snapchat").value.trim(),
+      x:$("s_x").value.trim(),
+      youtube:$("s_youtube").value.trim(),
+      threads:$("s_threads").value.trim(),
+      pinterest:$("s_pinterest").value.trim()
+    }
+  };
+  try{
+    const r=await fetch("/api/settings",{method:"POST",headers:{"content-type":"application/json","x-admin-password":getPw()},body:JSON.stringify(body)});
+    const j=await r.json();
+    btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> حفظ ونشر';
+    if(!r.ok){toast(j.error||"فشل الحفظ","err");return}
+    toast("تم حفظ إعدادات الاتصال ✓","ok");
+  }catch(e){
+    btn.disabled=false; btn.textContent="حفظ ونشر";
+    toast("خطأ في الشبكة: "+e.message,"err");
+  }
+};
+
 
 // ---------- SIDEBAR MOBILE ----------
 $("tbMenu").onclick=()=>{$("sb").classList.add("open");$("sbScrim").classList.add("on")};
