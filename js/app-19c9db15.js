@@ -2,7 +2,7 @@
 (function(){
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
-  var TITLES={home:"LUSSÉ — 100% Human Hair Extensions in Dubai",collection:"Hair Extension Colours — LUSSÉ Dubai",about:"About LUSSÉ — 100% Remy Hair Atelier, Dubai",faq:"Hair Extensions FAQ — LUSSÉ Dubai",gallery:"Studio Gallery — LUSSÉ Dubai",contact:"Book a Fitting — LUSSÉ Hair Atelier, Dubai"};
+  var TITLES={home:"100% Human Hair Extensions in Dubai | LUSSÉ",collection:"Hair Extension Colours & Collection — LUSSÉ Dubai",about:"About LUSSÉ — 100% Remy Human Hair Atelier in Dubai",faq:"Hair Extensions FAQ — LUSSÉ Dubai",gallery:"Studio Gallery — LUSSÉ Dubai Hair Extension Atelier",contact:"Book a Fitting — LUSSÉ Hair Atelier, Dubai"};
 
   /* ---------- colour helpers ---------- */
   function clampByte(v){return Math.max(0,Math.min(255,Math.round(v)));}
@@ -173,6 +173,13 @@
     document.querySelectorAll(".view.is-active video[data-poster]").forEach(function(v){v.setAttribute("poster",v.getAttribute("data-poster"));v.removeAttribute("data-poster");});
     document.querySelectorAll(".nav-links a").forEach(function(a){a.classList.toggle("active",a.getAttribute("data-go")===name);});
     document.title=TITLES[name];
+    var DESCS={home:"100% Remy human hair extensions in Dubai. Single-donor, hand-fitted clip-in, tape-in, hand-tied weft, halo & keratin bonds. Free UAE & KSA delivery.",collection:"Shop 100% Remy human hair extension collection in Dubai — 22+ colours, clip-in, tape-in, hand-tied weft, halo & keratin bonds. Free UAE + Saudi delivery.",gallery:"Real photos & videos from LUSSÉ Dubai hair extension atelier — clip-ins, tape-ins, K-tips, colour libraries & bulk Remy human hair on real clients.",about:"LUSSÉ Dubai — luxury 100% Remy human hair extension atelier. Single-donor, cuticle-aligned, hand-fitted. Delivered across UAE & Saudi Arabia.",faq:"Hair extension FAQ Dubai: colour match, wear time, care, tape vs clip vs keratin, delivery UAE & Saudi. Answers from LUSSÉ Remy hair specialists.",contact:"Book your free colour match with LUSSÉ Dubai. WhatsApp +971 54 200 5442. 100% Remy human hair extensions delivered across the UAE and Saudi Arabia."};
+    var md=document.querySelector('meta[name="description"]');
+    if(md && DESCS[name]) md.setAttribute("content",DESCS[name]);
+    var ogd=document.querySelector('meta[property="og:description"]');
+    if(ogd && DESCS[name]) ogd.setAttribute("content",DESCS[name]);
+    var can=document.querySelector('link[rel="canonical"]');
+    if(can) can.href=(name==="home"?"https://lussehair.com/":"https://lussehair.com/"+name);
     window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
     syncStrands(name);
     closeMenu();
